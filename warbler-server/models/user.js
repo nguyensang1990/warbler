@@ -19,7 +19,11 @@ const userSchema = new mongoose.Schema({
     },
     userImage: {
         type: String
-    }
+    },
+    messages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Message"
+    }]
 });
 
 // this is a pre-save hook, before each of any document in Mongoose is save, it will return a async function
