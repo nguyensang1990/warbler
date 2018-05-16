@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     userImage: {
         type: String
     }
-})
+});
 
 // this is a pre-save hook, before each of any document in Mongoose is save, it will return a async function
 userSchema.pre("save", async function (next) {
@@ -42,9 +42,9 @@ userSchema.pre("save", async function (next) {
 // Build a function that is used to compare the passwork when user login.
 // By wiriting this functon, every document that made from this user model have the ability 
 // to compare their password with the one user keys in (another hashed password)
-userSchema.method.comparePassword = async function (candidatePassword, next) {
+userSchema.methods.comparePassword = async function (candidatePassword, next) {
     try{
-        let isMatch = await bcrypt.compare(this.password, candidatePassword);
+        let isMatch = await bcrypt.compare(candidatePassword, this.password);
         return isMatch;
     } catch (err) {return next(err)}
 }

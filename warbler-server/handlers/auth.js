@@ -33,3 +33,41 @@ exports.signup = async function (req, res, next) {
         // or jusr send back a genatic 400
     }
 }
+
+exports.signin = async function (req, res, next) {
+    //finding a user
+    //chekc if their password is matched with the one in database
+    //if it matched
+        // log in
+    try {
+        let user = await db.User.findOne({
+            email: req.body.email
+        });
+        let { id, username, userImage } = user;
+        let isMatch = await user.comparePassword(req.body.password);
+        if (isMatch) {
+            let token = jwt.sign({
+                id,
+                username,
+                userImage,
+            }, process.env.SECRET_KEY);
+            return res.status(200).json({
+                id,
+                username,
+                userImage,
+                token
+            })
+        } else {
+            return next({
+                status: 400,
+                message: "Invalid Email/Password"
+            })
+        }
+    }
+    catch (err) {
+        return next({
+           status: 400,
+           message: "Invalid Email/Password"
+        })
+    }
+}
