@@ -1,31 +1,31 @@
 import React, { Component } from 'react';
 
 class AuthForm extends Component {
-  constructor (props) {
-    super(props);
-    this.state = {
+    state = {
       email: '',
       username: '',
       password: '',
       userImage: ''
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
 
-  handleSubmit (e) {
+  handleSubmit = (e) => {
     e.preventDefault();
     const authType = this.props.signUp ? "signup" : "signin";
-    this.props.onAuth(authType, this.state).then(() => console.log('Log in'))
+    this.props.onAuth(authType, this.state)
+      .then(() => this.props.history.push('/'))
+      .catch(() => {})
   }
 
-  handleChange (e) {
+  handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value});
   }
 
   render () {
     const {email, username, password, userImage} = this.state;
-    const {buttonText, headerText, signUp} = this.props;
+    const {buttonText, headerText, signUp, error, history, removeError} = this.props;
+
+    history.listen(() => removeError())
+
     return (
       <div>
         <div className='row justify-content-md-center text-center' >
@@ -44,6 +44,7 @@ class AuthForm extends Component {
                   <input className='form-control' id='userImage' name='userImage' type='text' value={userImage} onChange={this.handleChange} />
                 </div>
               )}
+              {error && (<div className="alert alert-danger" >{error}</div>)}
               <button type='submit' className='btn btn-primary btn-block btn-lg'>{buttonText}</button>
             </form>
           </div>
