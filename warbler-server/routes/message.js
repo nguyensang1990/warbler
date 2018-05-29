@@ -5,7 +5,7 @@ const { createMessage, getMessage, deleteMessage } = require('../handlers/messag
 
 router.route('/').post(createMessage);
 router
-  .route('/:message._id')
+  .route('/:message_id')
   .get(getMessage)
   .delete(deleteMessage);
 

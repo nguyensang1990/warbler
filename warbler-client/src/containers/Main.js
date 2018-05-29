@@ -4,6 +4,8 @@ import {connect} from 'react-redux';
 import Homepage from '../components/Homepage';
 import AuthForm from '../components/AuthForm';
 import {authUser, removeError} from '../store/actions';
+import withAuth from '../hocs/withAuth';
+import MessageForm from '../containers/MessageForm';
 
 const Main = props => {
   const {authUser, error, removeError, currentUser} = props;
@@ -17,6 +19,7 @@ const Main = props => {
         <Route exact path='/signup' render={props => (
           <AuthForm removeError={removeError} error={error.message} onAuth={authUser} signUp buttonText='Sign Up' headerText='Joint The New Social Flatform' {...props} />
         )} />
+        <Route path='/users/:id/messages/new' component={withAuth(MessageForm)} />
       </Switch>
     </div>
   );

@@ -29,9 +29,10 @@ exports.getMessage = async function (req, res, next) {
   }
 };
 
+// DELETE /api/users/:id/messages/:message_id
 exports.deleteMessage = async function (req, res, next) {
   try {
-    let foundMessage = await db.Message.findById(req.params.id);
+    let foundMessage = await db.Message.findById(req.params.message_id);
     await foundMessage.remove(); // findByIdAndRemove is not work with the pre-hook delete in model
     return res.status(200).json(foundMessage);
   } catch (err) {
